@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Función para calcular la serie de Fibonacci y almacenarla en un arreglo
+int* calcularSerieFibonacci(int n) {
+    // Reservar memoria para el arreglo de tamaño n
+    int* serie_fibonacci = (int*)malloc(n * sizeof(int));
+    // Verificar si la asignación de memoria fue exitosa
+    if (serie_fibonacci == NULL) {
+        printf("Error: No se pudo asignar memoria.\n");
+        exit(1);
+    }
+    
+    // Casos base de la serie de Fibonacci, valores conocidos ingresados manualmente
+    serie_fibonacci[0] = 0;
+    serie_fibonacci[1] = 1;
+    
+    // Calcular la serie de Fibonacci
+    for (int i = 2; i < n; i++) {
+        serie_fibonacci[i] = serie_fibonacci[i - 1] + serie_fibonacci[i - 2];
+    }
+    // Devolver el puntero que contiene la serie de Fibonacci
+    return serie_fibonacci;
+}
+
+int main() {
+    // Solicitud y lectura de la cantidad de elementos a trabajar
+    int cantidad_elementos;
+    printf("¿Cuántos elementos de la serie de Fibonacci quieres calcular? ");
+    scanf("%d", &cantidad_elementos);
+    
+    // Calcular la serie de Fibonacci utilizando la función calcularSerieFibonacci()
+    int* serie_fibonacci = calcularSerieFibonacci(cantidad_elementos);
+    
+    // Imprimir la serie de Fibonacci
+    printf("Serie de Fibonacci:\n");
+    for (int i = 0; i < cantidad_elementos; i++) {
+        printf("%d ", serie_fibonacci[i]);
+    }
+    printf("\n");
+    
+    // Duplicar el tamaño de la serie
+    // Se asigna un nuevo tamaño para el arreglo de la serie, multiplicando por 2
+    int nuevo_tamano = cantidad_elementos * 2;
+    // realloc se utiliza para cambiar el tamaño del bloque de memoria apuntado
+    int* serie_fibonacci_extendida = (int*)realloc(serie_fibonacci, nuevo_tamano * sizeof(int));
+    // Verificar si la redirección del puntero fue exitosa
+    if (serie_fibonacci_extendida == NULL) {
+        printf("Error: No se pudo asignar memoria.\n");
+        exit(1);
+    }
+    
+    // Calcular la serie de Fibonacci extendida
+    for (int i = cantidad_elementos; i < nuevo_tamano; i++) {
+        serie_fibonacci_extendida[i] = serie_fibonacci_extendida[i - 1] + serie_fibonacci_extendida[i - 2];
+    }
+    
+    // Imprimir la serie de Fibonacci extendida
+    printf("Serie de Fibonacci extendida:\n");
+    for (int i = 0; i < nuevo_tamano; i++) {
+        printf("%d ", serie_fibonacci_extendida[i]);
+    }
+    printf("\n");
+    
+    // Liberar la memoria asignada
+    free(serie_fibonacci_extendida);
+    
+    return 0;
+}
